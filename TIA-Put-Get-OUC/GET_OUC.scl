@@ -1,0 +1,693 @@
+﻿FUNCTION_BLOCK "GET_OUC"
+TITLE = GET_OUC
+{ S7_Optimized_Access := 'FALSE' }
+AUTHOR : ThomasWiens
+FAMILY : COMM
+VERSION : 1.0
+//Implementierung der GET Funktionalität unter Verwendung der Open User Communication (OUC), um Daten aus einer remoten S7-Steuerung zu lesen
+   VAR_INPUT 
+      REQ { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;   // Steuerparameter request, aktiviert den Datenaustausch bei steigender Flanke.
+      ADDR_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Remote;   // Adresse in der Partnerstation
+      _ADDR_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT ADDR_1 : Struct
+         syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+      END_STRUCT;
+      ADDR_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Remote;   // Adresse in der Partnerstation
+      _ADDR_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT ADDR_2 : Struct
+         syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+      END_STRUCT;
+      ADDR_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Remote;   // Adresse in der Partnerstation
+      _ADDR_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT ADDR_3 : Struct
+         syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+      END_STRUCT;
+      ADDR_4 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Remote;   // Adresse in der Partnerstation
+      _ADDR_4 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT ADDR_4 : Struct
+         syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+      END_STRUCT;
+      RD_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Remote;   // Adresse in der eigenen Station
+      _RD_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT RD_1 : Struct
+         syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+      END_STRUCT;
+      RD_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Remote;   // Adresse in der eigenen Station
+      _RD_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT RD_2 : Struct
+         syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+      END_STRUCT;
+      RD_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Remote;   // Adresse in der eigenen Station
+      _RD_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT RD_3 : Struct
+         syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+      END_STRUCT;
+      RD_4 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Remote;   // Adresse in der eigenen Station
+      _RD_4 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT RD_4 : Struct
+         syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+      END_STRUCT;
+      REM_IP_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : USInt;   // Remote IP-Address
+      REM_IP_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : USInt;   // Remote IP-Address
+      REM_IP_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : USInt;   // Remote IP-Address
+      REM_IP_4 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : USInt;   // Remote IP-Address
+      REM_TSAP { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Word := 16#0302;   // Remote TSAP: left byte Connection ressource, right byte rack/slot
+      LOCAL_TSAP { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Word := 16#1102;   // Local TSAP: left byte Connection ressource, right byte rack/slot
+      CONN_ID { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : CONN_OUC;   // Connection identifier für TCP conection
+      TIMEOUT { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Time := t#5s;   // Timeout für Verbindungs- und Empfangsüberwachug
+   END_VAR
+
+   VAR_OUTPUT 
+      NDR { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;   // Zustandsparameter NDR: 0: Auftrag wurde noch nicht gestartet oder läuft noch, 1: Auftrag wurde erfolgreich abgeschlossen
+      ERROR { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;   // Fehleranzeige ERROR: 1: Es liegt ein Fehler vor
+      STATUS { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Word;   // Detaillierte Fehler und Statusanzeige
+   END_VAR
+
+   VAR 
+      stat_TCON {OriginalPartName := 'T_CON'; LibVersion := '3.0'; ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : TCON;   // TCON
+      stat_TSEND {OriginalPartName := 'T_SEND'; LibVersion := '3.0'; ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : TSEND;   // TSEND
+      stat_TRCV {OriginalPartName := 'T_RCV'; LibVersion := '3.0'; ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : TRCV;   // TRCV
+      stat_TDISCON {OriginalPartName := 'T_DISCON'; LibVersion := '2.1'; ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : TDISCON;   // TDISCON
+      stat_PAR {OriginalPartName := 'TCON_Param'; LibVersion := '1.0'; ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : TCON_Param;   // Verbindungsparameter
+      stat_SND_BUF { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Array[0..239] of Byte;   // Sendepuffer
+      s7c_job_sc { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT stat_SND_BUF : Struct   // @Sendepuffer: S7comm Job Setup Communication
+         hd_prot_id { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Header: Protocol Id
+         hd_rosctr { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Header: ROSCTR
+         hd_redid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Header: Redundancy Identification (Reserved)
+         hd_pduref { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Header: Protocol Data Unit Reference
+         hd_parlg { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Header: Parameter length
+         hd_datlg { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Header: Data length
+         pa_func { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Parameter : Function
+         pa_reserved1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Parameter: Reserved
+         pa_maxamqcalling { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Parameter: Max AmQ calling
+         pa_maxamqcalled { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Parameter: Max AmQ called
+         pa_pdulength { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Parameter: PDU length
+      END_STRUCT;
+      s7c_job_rv { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT stat_SND_BUF : Struct   // @Sendepuffer: S7comm Job Read Variables
+         hd_prot_id { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Header: Protocol Id
+         hd_rosctr { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Header: ROSCTR
+         hd_redid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Header: Redundancy Identification (Reserved)
+         hd_pduref { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Header: Protocol Data Unit Reference
+         hd_parlg { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Header: Parameter length
+         hd_datlg { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Header: Data length
+         pa_func { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Parameter : Function
+         pa_itemcount { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : USInt;   // Parameter: Item count
+         pa_it { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Array[1..4] of Struct   // Parameter: Items
+            varspec { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Parameter: Item: Varspec
+            varspec_length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : USInt;   // Parameter: Item: Varspec length
+            syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Parameter: Item: Syntax ID
+            transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Parameter: Item: Transport size
+            length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Parameter: Item: Length
+            dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Parameter: Item: DB number
+            area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Parameter: Item: Area
+            ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Parameter: Item: Adress
+            ptr_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Parameter: Item: Adress
+            ptr_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Parameter: Item: Adress
+         END_STRUCT;
+      END_STRUCT;
+      stat_RCV_BUF { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Array[0..239] of Byte;   // Empfangspuffer
+      s7c_ack_sc { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT stat_RCV_BUF : Struct   // @Empfangspuffer: S7comm Ack Setup Communication
+         hd_prot_id { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Header: Protocol Id
+         hd_rosctr { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Header: ROSCTR
+         hd_redid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Header: Redundancy Identification (Reserved)
+         hd_pduref { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Header: Protocol Data Unit Reference
+         hd_parlg { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Header: Parameter length
+         hd_datlg { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Header: Data length
+         hd_errcls { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Header: Error class
+         hd_errcod { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Header: Error code
+         pa_func { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Parameter : Function
+         pa_reserved1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Parameter: Reserved
+         pa_maxamqcalling { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Parameter: Max AmQ calling
+         pa_maxamqcalled { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Parameter: Max AmQ called
+         pa_pdulength { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Parameter: PDU length
+      END_STRUCT;
+      s7c_ack_rv { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT stat_RCV_BUF : Struct   // @Empfangspuffer: S7comm Ack Read Variables
+         hd_prot_id { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Header: Protocol Id
+         hd_rosctr { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Header: ROSCTR
+         hd_redid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Header: Redundancy Identification (Reserved)
+         hd_pduref { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Header: Protocol Data Unit Reference
+         hd_parlg { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Header: Parameter length
+         hd_datlg { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Header: Data length
+         hd_errcls { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Header: Error class
+         hd_errcod { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Header: Error code
+         pa_func { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Parameter : Function
+         pa_itemcount { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : USInt;   // Parameter: Itemcount
+         da_it1_retcode { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Data: Item 1 Return code
+         da_it1_transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;   // Data: Item 1 Transport size
+         da_it1_length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;   // Data: Item 1 Length
+      END_STRUCT;
+      stat_TON_RCVTO {OriginalPartName := 'IEC_TIMER'; LibVersion := '1.0'; ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : TON_TIME;   // Timer Empfangstimeout
+      stat_TON_CONTO {OriginalPartName := 'IEC_TIMER'; LibVersion := '1.0'; ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : TON_TIME;   // Timer Verbindungstimeout
+      stat_ADDR_i_save { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Array[1..4] of Struct   // Gespeicherte remote Zieladressen
+         syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+      END_STRUCT;
+      stat_RD_i_save { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Array[1..4] of Struct   // Gespeicherte lokale Zieladressen
+         syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         ptr_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+      END_STRUCT;
+      stat_RCV_Timeout { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;   // Empfangstimeout abgelaufen
+      stat_CON_Timeout { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;   // Verbindungstimeout abgelaufen
+      stat_ID { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : CONN_OUC;   // Gespeicherte Verbindungs-ID
+      stat_n_items_active { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Int;   // Anzahl aktiver Adressen 1 bis 4
+      stat_STATE { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Int;   // Zustandsmaschine
+      stat_REQ_OLD { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_NEW_REQ { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_TCON_REQ { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_TCON_DONE { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_TCON_BUSY { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_TCON_ERROR { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_TCON_STATUS { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Word;
+      stat_TSEND_LEN { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+      stat_TSEND_REQ { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_TSEND_DONE { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_TSEND_BUSY { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_TSEND_ERROR { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_TSEND_STATUS { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Word;
+      stat_TRCV_EN_R { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_TRCV_NDR { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_TRCV_BUSY { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_TRCV_ERROR { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_TRCV_STATUS { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Word;
+      stat_TRCV_RCVD_LEN { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+      stat_TDISCON_REQ { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_TDISCON_DONE { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_TDISCON_BUSY { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_TDISCON_ERROR { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      stat_TDISCON_STATUS { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Word;
+   END_VAR
+
+   VAR_TEMP 
+      i : Int;
+      j : Int;
+      pos : Int;
+      byteoffset : DWord;
+      it_retcode : Byte;
+      it_transpsize : Byte;
+      it_length : UInt;   // Datenlänge im Item Roh
+      it_length_actual : UInt;   // Datenlänge im Item auf Anzahl Bytes normiert
+      n_items_with_error : Int;   // Anzahl Items mit Fehler
+   END_VAR
+
+   VAR CONSTANT 
+      SM_IDLE : Int := 0;
+      SM_CONNECT_ISO : Int := 1;
+      SM_CONNECT_PLC_REQ : Int := 2;
+      SM_CONNECT_PLC_RES : Int := 3;
+      SM_READ_REQ : Int := 4;
+      SM_READ_RES : Int := 5;
+      SM_DISCONNECT : Int := 6;
+      S7_HD_PROTID : Byte := 16#32;   // S7comm header: Protocol ID 0x32
+      S7_HD_ROSCTR_JOB : Byte := 16#01;   // S7comm header: ROSCTR Job(1)
+      S7_HD_ROSCTR_ACKDATA : Byte := 16#03;   // S7comm header: ROSCTR AckData (3)
+      S7_PA_FUNC_SETUPCOMM : Byte := 16#F0;   // S7comm parameter: Function Setup Communication (0xf0)
+      S7_PA_FUNC_READVAR : Byte := 16#04;   // S7comm parameter: Function Read Var (0x04)
+   END_VAR
+
+
+BEGIN
+	//=============================================================================
+	// 
+	// 
+	//-----------------------------------------------------------------------------
+	// Library:       -
+	// Tested with:   S7-1214C FW2.2
+	// Engineering:   TIA Portal V14 SP1 Update 3
+	// Restrictions:  -
+	// Requirements:  PLC (S7-1200 / S7-1500)
+	// Functionality: GET_OUC: Daten aus einer remoten CPU lesen mittels Open User Communication.
+	// 
+	// Dieser Funktionsbaustein implementiert die Funktionalität der im Betriebssystem vorhandenen
+	// GET Funktionen unter Verwendung von Open User Communication.
+	// Der Vorteil ist, dass die Verbindungsadresse nicht parametriert werden muss, sonder im Programm
+	// programmiert werden kann. In Runtime kann somit eine Verbindung zu mehreren verschiedenen
+	// Steuerungen aufgebaut werden.
+	// 
+	// Die grundlegende Schnittstelle ist identisch zum GET ausgeführt. Zusätzliche Eingangsparameter
+	// sind die IP-Adresse der Remote CPU, die Quell- und Ziel TSAPs, die intern verwendete
+	// Verbindungs-ID für die OUC Bausteine (TCON, TSEND, TRCV, TDISCON), TIMEOUT gibt die
+	// maximale Überwachungszeit für den Verbindungsaufbau und für den Datenempfang an.
+	// Der angegebene Datenbereich in der eigenen CPU muss ein nicht-optimierter Speicherbereich sein.
+	// 
+	// Es wird eine PDU von 240 Byte verwendet. Dabei muss beachtet werden, dass die Gesamtgröße
+	// abzüglich Protokolloverhead diesen Wert nicht überschreiten. Die über alle Bereiche mögliche
+	// Nutzdatenmenge berechet sich aus
+	// - 1 Bereich : 240 - 12 - 2 - 4 * 1 = 222
+	// - 2 Bereiche: 240 - 12 - 2 - 4 * 2 = 218
+	// - 3 Bereiche: 240 - 12 - 2 - 4 * 3 = 214
+	// - 4 Bereiche: 240 - 12 - 2 - 4 * 4 = 210
+	// 
+	// ERROR STATUS(dez) Erläuterung
+	// 0       11        Warnung: Neuer Auftrag ist unwirksam, da vorangegangener Auftrag noch nicht
+	//                   abgeschlossen ist. Der Auftrag wird bereits in einer Prioritätsklasse mit
+	//                   niedrigerer Priorität bearbeitet.
+	// 0       25        Die Kommunikation wurde angestoßen. Der Auftrag ist in Bearbeitung.
+	// 1       1         Kommunikationsprobleme, z. B. Verbindungsbeschreibung nicht geladen
+	//                   (lokal oder Remote)Verbindung unterbrochen (z.B. Kabel, CPU ausgeschaltet, CP in STOP)
+	// 1       2         Negative Quittung vom Partnergerät. Die Funktion ist nicht ausführbar.
+	// 1       4         Fehler in den Empfangsbereichszeigern RD_i bezüglich der Datenlänge oder des Datentyps.
+	// 1       8         Zugriffsfehler bei der Partner-CPU.
+	// 1       27        Für diesen Baustein existiert in der CPU kein Funktionscode.
+	// 
+	// BESONDERHEITEN:
+	// - Die Verbindung wird mit jedem REQ neu aufgebaut, nach dem Lesen wieder abgebaut
+	// - Wenn der Baustein mit NDR=1 fertig meldet, kann noch nicht umgehend ein neuer Auftrag
+	//   mit REQ gestartet werden, da der DISCON eine unbestimmte Anzahl an Zyklen benötigt.
+	// - Sollen Bereiche nicht gelesen werden, sind diese Parameter mit NULL zu beschalten.
+	//   Es werden alle vorigen Bereiche bis zm ersten NULL-Bereich verarbeitet.
+	// - Werden mehrere Bereiche gelesen und einer davon meldet einen Zugriffsfehler in der Remote-CPU,
+	//   so werden trotzdem die anderen Bereiche verarbeitet und in den Zielbereich geschrieben.
+	//   NDR ist dann false, ERROR ist dann true.
+	//   
+	//-----------------------------------------------------------------------------
+	// Change log table:
+	// Version Date        In charge / Changes applied
+	// 01.00.00 01.12.2021 Thomas Wiens
+	//                     Ursprungsversion
+	//=============================================================================
+	
+	#stat_NEW_REQ := #REQ AND NOT #stat_REQ_OLD AND #stat_STATE = #SM_IDLE;
+	IF #REQ AND NOT #stat_REQ_OLD AND #stat_STATE <> #SM_IDLE THEN
+	    #STATUS := INT_TO_WORD(11);
+	END_IF;
+	#stat_REQ_OLD := #REQ;
+	
+	CASE #stat_STATE OF
+	    //REGION Step 0: Idle, Set connection parameters on new request
+	    #SM_IDLE:
+	        #NDR := false;
+	        #ERROR := false;
+	        #STATUS := INT_TO_WORD(0);
+	        
+	        #stat_TCON_REQ := false;
+	        #stat_TSEND_REQ := false;
+	        
+	        IF #stat_NEW_REQ THEN
+	            // Verbindungsparameter setzen
+	            #stat_ID := #CONN_ID;
+	            #stat_PAR.ID := #stat_ID;
+	            #stat_PAR.CONNECTION_TYPE := 18; // 18=ISOonTCP
+	            #stat_PAR.ACTIVE_EST := true;
+	            // Lokaler TSAP
+	            #stat_PAR.LOCAL_TSAP_ID_LEN := 2;
+	            #stat_PAR.LOCAL_TSAP_ID[1] := #LOCAL_TSAP.%B1;
+	            #stat_PAR.LOCAL_TSAP_ID[2] := #LOCAL_TSAP.%B0;
+	            // Fremder TSAP
+	            #stat_PAR.REM_TSAP_ID_LEN := 2;
+	            #stat_PAR.REM_TSAP_ID[1] := #REM_TSAP.%B1;
+	            #stat_PAR.REM_TSAP_ID[2] := #REM_TSAP.%B0;
+	            // Fremde IP-Adresse
+	            #stat_PAR.REM_STADDR_LEN := 4;
+	            #stat_PAR.REM_STADDR[1] := #REM_IP_1;
+	            #stat_PAR.REM_STADDR[2] := #REM_IP_2;
+	            #stat_PAR.REM_STADDR[3] := #REM_IP_3;
+	            #stat_PAR.REM_STADDR[4] := #REM_IP_4;
+	            
+	            // Adressbereiche für den Bearbeitungszeitraum speichern
+	            #stat_ADDR_i_save[1] := #_ADDR_1;
+	            #stat_ADDR_i_save[2] := #_ADDR_2;
+	            #stat_ADDR_i_save[3] := #_ADDR_3;
+	            #stat_ADDR_i_save[4] := #_ADDR_4;
+	            #stat_RD_i_save[1] := #_RD_1;
+	            #stat_RD_i_save[2] := #_RD_2;
+	            #stat_RD_i_save[3] := #_RD_3;
+	            #stat_RD_i_save[4] := #_RD_4;
+	            
+	            #stat_n_items_active := 0;
+	            FOR #i := 1 TO 4 DO
+	                // Es werden die Adressen bis zum ersten NULL Any-Pointer übernommen.
+	                // Wenn am Parameter NULL angetragen wird ist Syntax ID weiterhin 0x10, die
+	                // restlichen Werte jedoch Null.
+	                IF (#stat_ADDR_i_save[#i].transpsize > 0 AND #stat_ADDR_i_save[#i].length > 0 )
+	                THEN
+	                    // Es ist eine Adresse angegeben
+	                    #stat_n_items_active := #stat_n_items_active + 1;
+	                    // Adressbereiche ADDR_i und RD_i prüfen
+	                    IF (#stat_ADDR_i_save[#i].transpsize <> #stat_RD_i_save[#i].transpsize OR
+	                        #stat_ADDR_i_save[#i].length <> #stat_RD_i_save[#i].length)
+	                    THEN
+	                        #ERROR := true;
+	                        #STATUS := INT_TO_WORD(4);
+	                        #stat_STATE := #SM_IDLE;
+	                    END_IF;
+	                ELSE
+	                    IF #stat_n_items_active > 0 THEN
+	                        // Wenn eine Adresse vorhanden -> hier Ende und Ok.
+	                        EXIT;
+	                    ELSE
+	                        // keine Adresse mit <> NULL -> Fehler.
+	                        #ERROR := true;
+	                        #STATUS := INT_TO_WORD(4);
+	                        #stat_STATE := #SM_IDLE;
+	                    END_IF;
+	                END_IF;
+	            END_FOR;
+	            // Alles Ok soweit, Auftrag starten
+	            #STATUS := INT_TO_WORD(25); // Auftrag in Bearbeitung
+	            #stat_TCON_REQ := true;
+	            #stat_STATE := #SM_CONNECT_ISO;
+	        END_IF;
+	    //END_REGION
+	    
+	    //REGION Step 1: Connect to partner with ISOonTCP connection
+	    #SM_CONNECT_ISO:
+	        IF #stat_TCON_DONE THEN
+	            #stat_TCON_REQ := false;
+	            #stat_STATE := #SM_CONNECT_PLC_REQ;
+	        ELSIF #stat_TCON_ERROR OR #stat_CON_Timeout THEN
+	            #stat_TCON_REQ := false;
+	            #ERROR := true;
+	            #STATUS := INT_TO_WORD(1);
+	            #stat_STATE := #SM_DISCONNECT;
+	        END_IF;
+	    //END_REGION
+	    
+	    //REGION Step 2: Connect to partner on S7comm layer
+	    #SM_CONNECT_PLC_REQ:
+	        IF NOT #stat_TSEND_REQ THEN
+	            #s7c_job_sc.hd_prot_id := #S7_HD_PROTID;
+	            #s7c_job_sc.hd_rosctr := #S7_HD_ROSCTR_JOB;
+	            #s7c_job_sc.hd_redid := 0;
+	            #s7c_job_sc.hd_pduref := 1;
+	            #s7c_job_sc.hd_parlg := 8;
+	            #s7c_job_sc.hd_datlg := 0;
+	            #s7c_job_sc.pa_func := #S7_PA_FUNC_SETUPCOMM;
+	            #s7c_job_sc.pa_reserved1 := 16#0;
+	            #s7c_job_sc.pa_maxamqcalling := 1;
+	            #s7c_job_sc.pa_maxamqcalled := 1;
+	            #s7c_job_sc.pa_pdulength := 240;
+	            
+	            #stat_TSEND_LEN := 18;
+	            #stat_TSEND_REQ := true;
+	        ELSE
+	            IF #stat_TSEND_DONE THEN
+	                #stat_TSEND_REQ := false;
+	                #stat_TRCV_EN_R := true;
+	                #stat_STATE := #SM_CONNECT_PLC_RES;
+	            ELSIF #stat_TSEND_ERROR THEN
+	                #stat_TSEND_REQ := false;
+	                #ERROR := true;
+	                #STATUS := INT_TO_WORD(1);
+	                #stat_STATE := #SM_DISCONNECT;
+	            END_IF;
+	        END_IF;
+	    //END_REGION
+	    
+	    //REGION Step 3: Process connect response
+	    #SM_CONNECT_PLC_RES:
+	        IF #stat_TRCV_NDR THEN
+	            // Eine fehlerfreie Antwort ist 20 Bytes lang.
+	            // Da wir schon mit der kleinstmöglichen 240 Byte PDU starten, muss
+	            // hier nichts ausgehandelt werden.
+	            IF #stat_TRCV_RCVD_LEN = 20 THEN
+	                IF #s7c_ack_sc.hd_prot_id = #S7_HD_PROTID AND
+	                    #s7c_ack_sc.hd_rosctr = #S7_HD_ROSCTR_ACKDATA AND
+	                    #s7c_job_sc.hd_pduref = #s7c_ack_sc.hd_pduref AND
+	                    #s7c_ack_sc.hd_errcls = 0 THEN
+	                    
+	                    #stat_TRCV_EN_R := false;
+	                    #stat_STATE := #SM_READ_REQ;
+	                ELSE
+	                    #ERROR := true;
+	                    #STATUS := INT_TO_WORD(1);
+	                    #stat_TRCV_EN_R := false;
+	                    #stat_STATE := #SM_DISCONNECT;
+	                END_IF;
+	            ELSE
+	                #ERROR := true;
+	                #STATUS := INT_TO_WORD(1);
+	                #stat_TRCV_EN_R := false;
+	                #stat_STATE := #SM_DISCONNECT;
+	            END_IF;
+	        ELSIF #stat_TRCV_ERROR OR #stat_RCV_Timeout THEN
+	            #ERROR := true;
+	            #STATUS := INT_TO_WORD(1);
+	            #stat_TRCV_EN_R := false;
+	            #stat_STATE := #SM_DISCONNECT;
+	        END_IF;
+	    //END_REGION
+	    
+	    //REGION Step 4: Create Read Request
+	    #SM_READ_REQ:
+	        IF NOT #stat_TSEND_REQ THEN
+	            #s7c_job_rv.hd_prot_id := #S7_HD_PROTID;
+	            #s7c_job_rv.hd_rosctr := #S7_HD_ROSCTR_JOB;
+	            #s7c_job_rv.hd_redid := 0;
+	            #s7c_job_rv.hd_pduref := 2;
+	            #s7c_job_rv.hd_parlg := 2 + INT_TO_USINT(#stat_n_items_active) * 12;
+	            #s7c_job_rv.hd_datlg := 0;
+	            #s7c_job_rv.pa_func := #S7_PA_FUNC_READVAR;
+	            #s7c_job_rv.pa_itemcount := INT_TO_USINT(#stat_n_items_active);
+	            // Item 1..4
+	            FOR #i := 1 TO #stat_n_items_active DO
+	                #s7c_job_rv.pa_it[#i].varspec := 16#12;
+	                #s7c_job_rv.pa_it[#i].varspec_length := 10;
+	                #s7c_job_rv.pa_it[#i].syntaxid := #stat_ADDR_i_save[#i].syntaxid;
+	                #s7c_job_rv.pa_it[#i].transpsize := #stat_ADDR_i_save[#i].transpsize;
+	                #s7c_job_rv.pa_it[#i].length := #stat_ADDR_i_save[#i].length;
+	                #s7c_job_rv.pa_it[#i].dbnum := #stat_ADDR_i_save[#i].dbnum;
+	                #s7c_job_rv.pa_it[#i].area := #stat_ADDR_i_save[#i].area;
+	                #s7c_job_rv.pa_it[#i].ptr_1 := #stat_ADDR_i_save[#i].ptr_1;
+	                #s7c_job_rv.pa_it[#i].ptr_2 := #stat_ADDR_i_save[#i].ptr_2;
+	                #s7c_job_rv.pa_it[#i].ptr_3 := #stat_ADDR_i_save[#i].ptr_3;
+	            END_FOR;
+	            #stat_TSEND_LEN := 12 + INT_TO_USINT(#stat_n_items_active) * 12;
+	            #stat_TSEND_REQ := true;
+	        ELSE
+	            IF #stat_TSEND_DONE THEN
+	                #stat_TSEND_REQ := false;
+	                #stat_TRCV_EN_R := true;
+	                #stat_STATE := #SM_READ_RES;
+	            ELSIF #stat_TSEND_ERROR THEN
+	                #stat_TSEND_REQ := false;
+	                #ERROR := true;
+	                #STATUS := INT_TO_WORD(1);
+	                #stat_STATE := #SM_DISCONNECT;
+	            END_IF;
+	        END_IF;
+	    //END_REGION
+	        
+	    //REGION Step 5: Process read response
+	    #SM_READ_RES:
+	        IF #stat_TRCV_NDR THEN
+	            #stat_TRCV_EN_R := false;
+	            // Mindestlänge 14 Bytes
+	            IF #stat_TRCV_RCVD_LEN >= 14 THEN
+	                IF #s7c_ack_rv.hd_prot_id = #S7_HD_PROTID AND
+	                    #s7c_ack_rv.hd_rosctr = #S7_HD_ROSCTR_ACKDATA AND
+	                    #s7c_job_rv.hd_pduref = #s7c_ack_rv.hd_pduref AND
+	                    #s7c_ack_rv.hd_errcls = 0 AND
+	                    #s7c_ack_rv.pa_itemcount = #s7c_job_rv.pa_itemcount
+	                THEN
+	                    #pos := 14;
+	                    #n_items_with_error := 0;
+	                    // Items 1..4 durchgehen
+	                    FOR #i := 1 TO USINT_TO_INT(#s7c_ack_rv.pa_itemcount) DO
+	                        #it_retcode := #stat_RCV_BUF[#pos];
+	                        #it_transpsize := #stat_RCV_BUF[#pos + 1];
+	                        #it_length := BYTE_TO_UINT(#stat_RCV_BUF[#pos + 2]) * 256 + BYTE_TO_UINT(#stat_RCV_BUF[#pos + 3]);
+	                        #pos := #pos + 4;
+	                        
+	                        // Einzelnes Item auswerten, Daten in Zielbereich kopieren bei Erfolg.
+	                        IF #it_retcode = 16#ff THEN
+	                            // Länge ggf. korrigieren. Bei 3, 4, 5 ist die Länge in Bits.
+	                            // Bei ungerader Anzahl wird zwischen mehreren Items ein Füllbyte eingefügt.
+	                            IF #it_transpsize = 0 THEN
+	                                // FEHLER: Ungültige Transportsize an Item, darf nie vorkommen. Komplett Abbruch.
+	                                #ERROR := true;
+	                                #STATUS := INT_TO_WORD(8);
+	                                #stat_STATE := #SM_DISCONNECT;
+	                            ELSIF #it_transpsize = 3 OR
+	                                #it_transpsize = 4 OR
+	                                #it_transpsize = 5 THEN
+	                                #it_length_actual := #it_length / 8;
+	                            ELSE
+	                                #it_length_actual := #it_length;
+	                            END_IF;
+	                            
+	                            // Länge in Antwort stimmt mit Anfrage überein
+	                            IF #it_length_actual = #stat_ADDR_i_save[#i].length THEN
+	                                #byteoffset := 0;
+	                                #byteoffset.%B0 := #stat_RD_i_save[#i].ptr_3;
+	                                #byteoffset.%B1 := #stat_RD_i_save[#i].ptr_2;
+	                                #byteoffset.%B2 := #stat_RD_i_save[#i].ptr_1;
+	                                #byteoffset := SHR(IN := #byteoffset, N := 3);
+	                                
+	                                FOR #j := 0 TO UINT_TO_INT(#it_length_actual - 1) DO
+	                                    // Empfangene Daten in Zielbereich schreiben.
+	                                    POKE(area := #stat_RD_i_save[#i].area,
+	                                         dbNumber := #stat_RD_i_save[#i].dbnum,
+	                                         byteOffset := DWORD_TO_DINT(#byteoffset) + #j,
+	                                         value := #stat_RCV_BUF[#pos + #j]);
+	                                END_FOR;
+	                                // Zeiger auf Anfang nächstes Item setzen.
+	                                #pos := #pos + UINT_TO_INT(#it_length_actual);
+	                                // Füllbyte wenn Länge nicht durch 2 teilbar
+	                                IF #it_length_actual MOD 2 > 0 THEN
+	                                    #pos := #pos + 1;
+	                                END_IF;
+	                            ELSE
+	                                // FEHLER: Längenangabe in Antwort stimmt nicht mit Anfrage überein, darf nie vorkommen. Komplett Abbruch.
+	                                #ERROR := true;
+	                                #STATUS := INT_TO_WORD(8);
+	                                #stat_STATE := #SM_DISCONNECT;
+	                            END_IF;
+	                        ELSE
+	                            // FEHLER: Item konnte nicht erfolgreich gelesen werden.
+	                            // Nur Fehler/Status setzen, mit anderen Items fortsetzen ist aber möglich.
+	                            #n_items_with_error := #n_items_with_error + 1;
+	                        END_IF;
+	                    END_FOR;
+	
+	                    IF #n_items_with_error > 0 THEN
+	                        #NDR := false;
+	                        #ERROR := true;
+	                        #STATUS := INT_TO_WORD(8);
+	                    ELSE
+	                        #NDR := true;
+	                        #ERROR := false;
+	                        #STATUS := 0;
+	                    END_IF;
+	                    #stat_STATE := #SM_DISCONNECT;
+	                ELSE
+	                    // FEHLER: Header mit Fehlern
+	                    #ERROR := true;
+	                    #STATUS := INT_TO_WORD(8);
+	                    #stat_STATE := #SM_DISCONNECT;
+	                END_IF;
+	            ELSE
+	                // FEHLER: Paket Mindestlänge nicht erreicht
+	                #ERROR := true;
+	                #STATUS := INT_TO_WORD(1);
+	                #stat_STATE := #SM_DISCONNECT;
+	            END_IF;
+	        ELSIF #stat_TRCV_ERROR OR #stat_RCV_Timeout THEN
+	            #stat_TRCV_EN_R := false;
+	            #ERROR := true;
+	            #STATUS := INT_TO_WORD(1);
+	            #stat_STATE := #SM_DISCONNECT;
+	        END_IF;
+	    //END_REGION
+	    
+	    //REGION Step 6: Disconnect
+	    #SM_DISCONNECT:
+	        IF #stat_TDISCON_REQ THEN
+	            IF #stat_TDISCON_DONE OR #stat_TDISCON_ERROR THEN
+	                #stat_TDISCON_REQ := false;
+	                #stat_STATE := #SM_IDLE;
+	            END_IF;
+	        ELSE
+	            #stat_TDISCON_REQ := true;
+	        END_IF;
+	    //END_REGION
+	END_CASE;
+	
+	// Connection Timeout
+	#stat_TON_CONTO(IN := #stat_TCON_REQ,
+	                PT := #TIMEOUT,
+	                Q => #stat_CON_Timeout);
+	
+	// Aufruf TCON
+	#stat_TCON(REQ:=#stat_TCON_REQ,
+	           ID:=#stat_ID,
+	           DONE=>#stat_TCON_DONE,
+	           BUSY=>#stat_TCON_BUSY,
+	           ERROR=>#stat_TCON_ERROR,
+	           STATUS=>#stat_TCON_STATUS,
+	           CONNECT:=#stat_PAR);
+	
+	// Aufruf TSEND
+	#stat_TSEND(REQ:=#stat_TSEND_REQ,
+	            ID:=#stat_ID,
+	            LEN:=#stat_TSEND_LEN,
+	            DONE=>#stat_TSEND_DONE,
+	            BUSY=>#stat_TSEND_BUSY,
+	            ERROR=>#stat_TSEND_ERROR,
+	            STATUS=>#stat_TSEND_STATUS,
+	            DATA:=#stat_SND_BUF);
+	
+	// Receive Timeout
+	#stat_TON_RCVTO(IN := #stat_TRCV_EN_R,
+	                PT := #TIMEOUT,
+	                Q => #stat_RCV_Timeout);
+	// Aufruf TRECV
+	#stat_TRCV(EN_R := #stat_TRCV_EN_R,
+	           ID := #stat_ID,
+	           LEN := 0, // Adhoc, wegen ISOonTCP sollte die Länge aus dem ISO Header ausgewertet werden.
+	           NDR => #stat_TRCV_NDR,
+	           BUSY => #stat_TRCV_BUSY,
+	           ERROR => #stat_TRCV_ERROR,
+	           STATUS => #stat_TRCV_STATUS,
+	           RCVD_LEN => #stat_TRCV_RCVD_LEN,
+	           DATA := #stat_RCV_BUF);
+	
+	// Aufruf Disconnect
+	#stat_TDISCON(REQ:=#stat_TDISCON_REQ,
+	              ID:=#stat_ID,
+	              DONE=>#stat_TDISCON_DONE,
+	              BUSY=>#stat_TDISCON_BUSY,
+	              ERROR=>#stat_TDISCON_ERROR,
+	              STATUS=>#stat_TDISCON_STATUS);
+	
+END_FUNCTION_BLOCK
+
