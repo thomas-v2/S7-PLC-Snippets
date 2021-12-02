@@ -11,6 +11,10 @@ TIA Portal (TIA) oder Step 7 Classic V5.x (Step7) handelt.
 Implementierung der GET Funktionalität unter Verwendung der Open User Communication (OUC), um Daten
 aus einer remoten S7-Steuerung zu lesen.
 
+## Step7-Formelparser-SCL
+
+Implementierung eines Parsers und Interpreters für einfache arithmetische Ausdrücke, in Step7 SCL.
+
 ## Lizenz
 
 Soweit nicht anders vermerkt, gilt für alle Quellcodes die GNU Lesser General Public License,

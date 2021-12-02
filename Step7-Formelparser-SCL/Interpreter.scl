@@ -1,0 +1,149 @@
+﻿(**********************************************************)
+FUNCTION stack_push : VOID
+
+VAR_INPUT
+    val : INT;    
+END_VAR
+
+VAR_IN_OUT
+    stack :stack_t;
+END_VAR
+
+VAR_TEMP
+    i : INT;
+END_VAR
+
+BEGIN
+    IF (stack.size_act >= stack.size_max ) THEN
+        RETURN;
+    END_IF;
+    FOR i := stack.size_act TO 1 BY -1 DO
+        stack.val[i] := stack.val[i - 1];
+    END_FOR;
+    stack.val[0] := val;
+    stack.size_act := stack.size_act + 1;
+    IF (stack.size_act > stack.size_max ) THEN
+        stack.size_act := stack.size_max ;
+    END_IF;
+END_FUNCTION
+(**********************************************************)
+FUNCTION stack_pop : VOID
+
+VAR_IN_OUT
+    stack : stack_t;
+END_VAR
+
+VAR_OUTPUT
+    val : INT;    
+END_VAR
+
+VAR_TEMP
+    i : INT;
+END_VAR
+
+BEGIN
+    IF (stack.size_act > 0) THEN
+        val := stack.val[0];        
+        FOR i := 0 TO stack.size_act-2 DO
+            stack.val[i] := stack.val[i + 1];
+        END_FOR;
+        stack.size_act := stack.size_act - 1;        
+    ELSE
+        (* Stack leer *)
+        val := 0;
+    END_IF;
+END_FUNCTION
+(**********************************************************)
+FUNCTION interpreter : VOID
+
+CONST
+    LIT     := 1;   (* Zahl (Literal) in den Stapel legen *)
+    OPR     := 2;   (* arithmetische Operatoren *)
+    LOD     := 3;   (* Variablenwert in den Stapel legen *)
+    
+    OPR_ADD := 1;
+    OPR_SUB := 2;
+    OPR_MUL := 3;
+    OPR_DIV := 4;
+    OPR_NEG := 5;
+    
+    ID_A := 1;
+    ID_B := 2;
+    ID_C := 3;
+    ID_D := 4;
+    
+    STACK_SIZE := 100;
+END_CONST
+    
+VAR_INPUT
+    a : INT;
+    b : INT;
+    c : INT;
+    d : INT;
+END_VAR
+
+VAR_OUTPUT
+    out : INT;
+END_VAR
+
+VAR_TEMP
+    i : INT;
+    typ : INT;
+    val : INT;
+    erg : INT;
+    x : INT;
+    y : INT;
+    stack : stack_t;
+END_VAR
+
+BEGIN
+    (* Stack temp. Daten initialisieren *)
+    stack.size_act := 0;
+    stack.size_max := STACK_SIZE;
+    erg := 0;
+    (* Stackmaschine *)
+    FOR i := 0 TO "global".code_cnt - 1 DO
+        CASE "global".code_entry[i].typ OF
+            LIT:
+                val := "global".code_entry[i].val;
+                stack_push(val := val, stack := stack); (* Zahl auf Stack ablegen *)
+            OPR:
+                CASE "global".code_entry[i].val OF
+                    OPR_ADD:
+                        stack_pop(stack := stack, val := y);    (* Operand vom Stack holen *)
+                        stack_pop(stack := stack, val := x);    (* Operand vom Stack holen *)
+                        val := x + y;
+                        stack_push(val := val, stack := stack); (* Ergebnis auf Stack ablegen *)
+                    OPR_SUB:
+                        stack_pop(stack := stack, val := y);    (* Operand vom Stack holen *)
+                        stack_pop(stack := stack, val := x);    (* Operand vom Stack holen *)
+                        val := x - y;
+                        stack_push(val := val, stack := stack); (* Ergebnis auf Stack ablegen *)
+                    OPR_MUL:
+                        stack_pop(stack := stack, val := y);    (* Operand vom Stack holen *)
+                        stack_pop(stack := stack, val := x);    (* Operand vom Stack holen *)
+                        val := x * y;
+                        stack_push(val := val, stack := stack); (* Ergebnis auf Stack ablegen *)
+                    OPR_DIV:
+                        stack_pop(stack := stack, val := y);    (* Operand vom Stack holen *)
+                        stack_pop(stack := stack, val := x);    (* Operand vom Stack holen *)
+                        val := x / y;
+                        stack_push(val := val, stack := stack); (* Ergebnis auf Stack ablegen *)
+                    OPR_NEG:
+                        stack_pop(stack := stack, val := y);    (* Operand vom Stack holen *)
+                        val := -y;
+                        stack_push(val := val, stack := stack); (* Ergebnis auf Stack ablegen *)
+                END_CASE;
+            LOD:
+                val := "global".code_entry[i].val;              (* Nummer des Parameters, 1=a, 2=b, ... *)
+                CASE val OF
+                    ID_A: stack_push(val := a, stack := stack);  (* Wert des Parameters auf Stack ablegen *)
+                    ID_B: stack_push(val := b, stack := stack);
+                    ID_C: stack_push(val := c, stack := stack);
+                    ID_D: stack_push(val := d, stack := stack);
+                END_CASE;
+        END_CASE;
+    END_FOR;
+    stack_pop(stack := stack, val := erg);  (* Ergebnis vom Stack holen *)    
+    out := erg;
+END_FUNCTION

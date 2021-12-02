@@ -1,0 +1,254 @@
+﻿(**********************************************************)
+FUNCTION gen : VOID
+
+VAR_INPUT
+    typ : INT;
+    val : INT;
+END_VAR
+
+BEGIN
+    "global".code_entry["global".code_cnt].typ := typ;
+    "global".code_entry["global".code_cnt].val := val;
+    "global".code_cnt := "global".code_cnt + 1;
+END_FUNCTION
+(**********************************************************)
+FUNCTION getsym : VOID
+
+BEGIN
+    IF "global".input_pos < 253 THEN
+        "global".input_pos := "global".input_pos + 1;
+    END_IF;
+    "global".sym := "global".input["global".input_pos];
+    WHILE "global".sym = ' ' AND "global".input_pos < 253 DO
+        "global".input_pos := "global".input_pos + 1;
+        "global".sym := "global".input["global".input_pos];
+    END_WHILE;
+    "global".symval := CHAR_TO_INT("global".sym);
+END_FUNCTION
+(**********************************************************)
+FUNCTION ident : VOID
+
+CONST
+    LIT     := 1;
+    OPR     := 2;
+    LOD     := 3;
+END_CONST
+
+VAR_TEMP
+    val : INT;
+END_VAR
+
+BEGIN
+    CASE "global".symval OF  
+        97..100:                 (* 'a'..'d' *)
+            val := "global".symval - 96;
+        65..68:                  (* 'A'..'D' *)
+            val := "global".symval - 64;
+    END_CASE;
+    gen(typ := LOD, val := val);
+    getsym();                
+END_FUNCTION
+(**********************************************************)
+FUNCTION number : VOID
+
+CONST
+    LIT     := 1;
+    OPR     := 2;
+    LOD     := 3;
+END_CONST
+
+VAR_OUTPUT
+    error : INT;
+END_VAR
+
+VAR_TEMP
+    cnt : INT;
+    val : INT;
+    s : STRING;
+END_VAR
+
+BEGIN
+    cnt := 0;
+    s := '';
+    WHILE cnt <= 5 DO
+        CASE "global".symval OF      
+            48..57:             (* '0'..'9' *)
+                cnt := cnt + 1; 
+                s := CONCAT(IN1 := s, IN2 := "global".sym);
+                getsym();
+            ELSE:
+                 val := STRING_TO_INT(s);
+                 IF NOT ENO THEN  (* BIE-Bit ist bei Fehler nicht gesetzt *)
+                     error := 1;
+                     RETURN;
+                 END_IF;
+                 gen(typ := LIT, val := val);
+                 error := 0;
+                 RETURN;
+          END_CASE;
+      END_WHILE;
+      error := 2;
+END_FUNCTION
+(**********************************************************)
+FUNCTION factor : VOID
+
+VAR_OUTPUT
+    error : INT;
+END_VAR
+
+BEGIN
+    error := 0;
+    IF "global".symval >= CHAR_TO_INT('a') AND "global".symval <= CHAR_TO_INT('d') OR
+       "global".symval >= CHAR_TO_INT('A') AND "global".symval <= CHAR_TO_INT('D') THEN
+        ident();
+    ELSIF "global".symval >= CHAR_TO_INT('0') AND "global".symval <= CHAR_TO_INT('9') THEN
+        number(error := error);
+        IF error <> 0 THEN RETURN; END_IF;
+    ELSIF "global".sym = '(' THEN
+        getsym();
+        expression(error := error);
+        IF error <> 0 THEN RETURN; END_IF;
+        IF "global".sym = ')' THEN
+            getsym();
+        ELSE
+            error := 3;
+            RETURN;
+        END_IF;
+    ELSE
+        error := 4;
+        RETURN;
+    END_IF;    
+END_FUNCTION
+(**********************************************************)
+FUNCTION term : VOID
+
+CONST
+    LIT     := 1;
+    OPR     := 2;
+    LOD     := 3;
+    
+    OPR_ADD := 1;
+    OPR_SUB := 2;
+    OPR_MUL := 3;
+    OPR_DIV := 4;
+    OPR_NEG := 5;
+END_CONST
+
+VAR_OUTPUT
+    error : INT;
+END_VAR
+
+VAR_TEMP
+    mulop : CHAR;
+END_VAR
+
+BEGIN
+    error := 0;
+    factor(error := error);
+    IF error <> 0 THEN RETURN; END_IF;
+    WHILE "global".sym = '*' OR "global".sym = '/' DO
+        mulop := "global".sym;
+        getsym();
+        factor(error := error);
+        IF error <> 0 THEN RETURN; END_IF;
+        IF mulop = '*' THEN
+            gen(typ := OPR, val := OPR_MUL);
+        ELSE
+            gen(typ := OPR, val := OPR_DIV);
+        END_IF;
+    END_WHILE;
+    error := 0;
+END_FUNCTION
+(**********************************************************)
+FUNCTION expression : VOID
+
+CONST
+    LIT     := 1;
+    OPR     := 2;
+    LOD     := 3;
+    
+    OPR_ADD := 1;
+    OPR_SUB := 2;
+    OPR_MUL := 3;
+    OPR_DIV := 4;
+    OPR_NEG := 5;
+END_CONST
+
+VAR_OUTPUT
+    error : INT;
+END_VAR
+
+VAR_TEMP
+    addop : CHAR;
+END_VAR
+
+BEGIN
+    error := 0;
+    IF "global".sym = '+' OR "global".sym = '-' THEN
+        addop := "global".sym;
+        getsym();
+        term(error := error);
+        IF error <> 0 THEN RETURN; END_IF;
+        IF addop = '-' THEN
+            gen(typ := OPR, val := OPR_NEG);
+        END_IF;
+    ELSE
+        term(error := error);
+        IF error <> 0 THEN RETURN; END_IF;
+    END_IF;
+    
+    WHILE "global".sym = '+' OR "global".sym = '-' DO
+        addop := "global".sym;
+        getsym();
+        term(error := error);
+        IF error <> 0 THEN RETURN; END_IF;
+        IF addop = '+' THEN
+            gen(typ := OPR, val := OPR_ADD);
+        ELSE
+            gen(typ := OPR, val := OPR_SUB);
+        END_IF;
+    END_WHILE;
+END_FUNCTION  
+(**********************************************************)
+FUNCTION_BLOCK parser
+
+VAR_INPUT
+    input : STRING;
+    ain AT input: STRUCT
+        len_max : BYTE;
+        len_act : BYTE;
+        str : ARRAY[0..253] OF CHAR;
+    END_STRUCT;
+END_VAR
+
+VAR_OUTPUT
+    meldung : STRING;
+    error : INT;
+END_VAR
+
+BEGIN
+    error := 0;
+    "global".code_cnt := 0;
+    (* String-Zeichen-Array in Globaldaten-Array kopieren *)
+    "global".input := ain.str;
+    "global".input_pos := 0;
+    (* Null als ENDE-Kennzeichnung anhängen *)
+    "global".input[BYTE_TO_INT(ain.len_act)] := INT_TO_CHAR(0); 
+    (* Startzeichen setzen *)
+    "global".sym := "global".input[0];    
+    "global".symval := CHAR_TO_INT("global".sym);
+    expression(error := error);
+    (* Es folgt noch ein Zeichen, das nicht das Ende-Zeichen ist (0) dann Fehler *)
+    IF error = 0 AND "global".symval <> 0 THEN
+        error := 5;
+    END_IF;
+    IF error = 0 THEN
+        meldung := 'Kein Fehler.'; 
+    ELSE
+        meldung := 'Fehler an Zeichenposition ';
+        meldung := CONCAT(IN1 := meldung, IN2 := INT_TO_STRING("global".input_pos + 1));
+        meldung := CONCAT(IN1 := meldung, IN2 := ', Fehlercode ');
+        meldung := CONCAT(IN1 := meldung, IN2 := INT_TO_STRING(error));
+    END_IF;
+END_FUNCTION_BLOCK
+

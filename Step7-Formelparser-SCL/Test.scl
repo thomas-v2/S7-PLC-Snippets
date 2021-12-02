@@ -1,0 +1,39 @@
+﻿(**********************************************************)
+DATA_BLOCK "di-parser"  parser
+BEGIN
+END_DATA_BLOCK
+(**********************************************************)
+DATA_BLOCK "dbtest"
+STRUCT     
+    a : INT := 15;    
+    b : INT := 25;    
+    c : INT := 50;    
+    d : INT := 100;    
+    erg : INT;    
+    formel : STRING := 'a*2';    
+    meldung : STRING;    
+END_STRUCT;    
+BEGIN
+    a := 15; 
+    b := 25; 
+    c := 50; 
+    d := 100; 
+    erg := 0; 
+    formel := 'a*2+92'; 
+    meldung := ''; 
+END_DATA_BLOCK
+(**********************************************************)
+FUNCTION test : VOID
+
+VAR_TEMP
+    erg : INT;
+END_VAR
+
+BEGIN     
+    parser."di-parser"(input := "dbtest".formel);
+    "dbtest".meldung := "di-parser".meldung;
+    IF "di-parser".error = 0 THEN
+        interpreter(a := "dbtest".a, b := "dbtest".b, c := "dbtest".c, d := "dbtest".d, out := erg);
+    END_IF;
+    "dbtest".erg := erg;
+END_FUNCTION

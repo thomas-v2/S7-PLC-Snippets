@@ -1,0 +1,31 @@
+﻿(**********************************************************)
+(* Globaldaten für den Parser und den Interpreter *)
+
+DATA_BLOCK "global"
+//
+// Interpreter Daten
+//
+    STRUCT
+        sym : CHAR;
+        symval : INT;
+        input : ARRAY[0..253] OF CHAR;
+        input_pos : INT;
+        code_cnt : INT;
+        code_entry : ARRAY[0..100] OF 
+        STRUCT
+            typ : INT;
+            val : INT;
+        END_STRUCT;
+    END_STRUCT
+BEGIN
+END_DATA_BLOCK
+(**********************************************************)
+(* UDT STACK *)
+TYPE stack_t
+    STRUCT
+        val : ARRAY [0..99] OF INT;    (* Stack *)
+        size_act : INT := 0;           (* aktuelle Größe *)
+        size_max : INT := 100;         (* maximale Größe *)
+    END_STRUCT
+END_TYPE
+(**********************************************************)

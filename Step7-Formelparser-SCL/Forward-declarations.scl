@@ -1,0 +1,22 @@
+﻿(* Vorwärts-Deklarationen, da durch die Rekursion die Funktionsparameter bekannt sein müssen *)
+
+FUNCTION expression : VOID
+VAR_OUTPUT
+    error : INT;
+END_VAR
+BEGIN
+END_FUNCTION
+
+FUNCTION factor : VOID
+VAR_OUTPUT
+    error : INT;
+END_VAR
+BEGIN
+END_FUNCTION
+
+FUNCTION term : VOID
+VAR_OUTPUT
+    error : INT;
+END_VAR
+BEGIN
+END_FUNCTION
