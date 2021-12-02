@@ -72,8 +72,8 @@ des eigentlichen Codes später verwendet werden, die Hexadezimalwerte der Zeiche
 (#q = ', #L = L, #T = T, #D = D, #A = Leerzeichen, #n = Zeilenumbruch).
 
 Der im Lokaldatenbereich gespeicherte Quelltext wird zweimalig durch das Programm ausgegeben. Im ersten Durchlauf werden 4 Zeichen
-durch Ladeanweisung quotifiziert, d.h. der Inhalt wird in "L '" und "'" eingepackt. Die Transferanweisung wird durch "T LD n" mit einer
-automatisch generierten Adresse n auf dem Lokaldatenstack erzeugt.
+durch Ladeanweisung quotifiziert, d.h. der Inhalt wird in "L '" und "'" eingepackt und ausgegeben. Die Transferanweisung wird
+durch "T LD n" mit einer automatisch generierten Adresse n auf dem Lokaldatenstack erzeugt.
 
 Mittels des in Python geschriebenen Konvertierungsprogramm *awl-quine-helper.py* wird der Code von *quine-generator.awl* eingelesen,
 und in eine Serie aus 4 Byte Lade- und Transferanweisungen umsetzt, um den eigentlichen Quellcode von *quine-generator.awl* im
@@ -82,14 +82,14 @@ Lokaldatenbereich (Stack) abzulegen. Das könnte auch manuell geschehen, das Hil
 Das Ergebnis von *awl-quine-helper.py* wird dem Code von *quine-generator.awl* vorangestellt, und ergibt das Zieprogramm
 *quine-complete.awl*. Diese ist das eigentliche Lösungsprogramm welche die Bedingungen eines Quines erfüllt.
 
-Für den Vergleich müssen noch alle unnötigen Leerzeichen entfernt werden. Diese in den Code mit aufnehmen wäre zwar möglich,
+Für den Vergleich müssen noch alle unnötigen Leerzeichen entfernt werden. Diese in den Code mit aufzunehmen wäre zwar möglich,
 würde die Lösung aber unnötig verlängern.
 
-Die Länge des *quine-generator.awl* als String muss ein Vielfaches von 4 sein, welches händisch durch Anpassung
+Die Länge des *quine-generator.awl* als String muss ein Vielfaches von 4 sein, welche händisch durch Anpassung
 der Länge von Variablennamen oder Sprunglabeln daraufhin optimiert wurde.
 
-Die Lösung verwendet mindestens 812 Byte auf dem Lokaldatenstack (812 byte für den Code von *quine-generator.awl*, sowie den
-Hilfsvariablen #q, #L, #T, usw., und ist deshalb nicht auf allen (vor allem älteren / kleineren) S7
+Die Lösung verwendet mindestens 812 Byte auf dem Lokaldatenstack (812 Byte für den Code von *quine-generator.awl*, sowie den
+Hilfsvariablen #q, #L, #T, usw.), und ist deshalb nicht auf allen (vor allem älteren / kleineren) S7
 Steuerungen lauffähig. Das Problem kann aber umgangen werden, in dem das Prizip beibehalten wird und die Daten nicht auf
 dem Lokaldatenstack sondern in den statischen Daten eines Funktionsbausteins abgelegt werden, welcher dieser Größenbeschränkung nicht
 unterliegt.
