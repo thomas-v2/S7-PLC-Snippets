@@ -1,0 +1,517 @@
+      L     'L B#'
+      T     LD     0
+      L     '16#2'
+      T     LD     4
+      L     '7$RT '
+      T     LD     8
+      L     '#q$RL'
+      T     LD    12
+      L     ' B#1'
+      T     LD    16
+      L     '6#D$R'
+      T     LD    20
+      L     'T #n'
+      T     LD    24
+      L     '$RL B'
+      T     LD    28
+      L     '#16#'
+      T     LD    32
+      L     '4C$RT'
+      T     LD    36
+      L     ' #L$R'
+      T     LD    40
+      L     'L B#'
+      T     LD    44
+      L     '16#5'
+      T     LD    48
+      L     '4$RT '
+      T     LD    52
+      L     '#T$RL'
+      T     LD    56
+      L     ' B#1'
+      T     LD    60
+      L     '6#44'
+      T     LD    64
+      L     '$RT #'
+      T     LD    68
+      L     'D$RL '
+      T     LD    72
+      L     'B#16'
+      T     LD    76
+      L     '#20$R'
+      T     LD    80
+      L     'T #A'
+      T     LD    84
+      L     '$RLAR'
+      T     LD    88
+      L     '1 P#'
+      T     LD    92
+      L     '#s$RC'
+      T     LD    96
+      L     'LR$R='
+      T     LD   100
+      L     ' #e$R'
+      T     LD   104
+      L     'L 0$R'
+      T     LD   108
+      L     'T #i'
+      T     LD   112
+      L     '$Rn: '
+      T     LD   116
+      L     'U #e'
+      T     LD   120
+      L     '$RSPB'
+      T     LD   124
+      L     ' o$RC'
+      T     LD   128
+      L     'ALL '
+      T     LD   132
+      L     '"put'
+      T     LD   136
+      L     'c"$Rc'
+      T     LD   140
+      L     ':=#L'
+      T     LD   144
+      L     '$RCAL'
+      T     LD   148
+      L     'L "p'
+      T     LD   152
+      L     'utc"'
+      T     LD   156
+      L     '$Rc:='
+      T     LD   160
+      L     '#A$RC'
+      T     LD   164
+      L     'ALL '
+      T     LD   168
+      L     '"put'
+      T     LD   172
+      L     'c"$Rc'
+      T     LD   176
+      L     ':=#q'
+      T     LD   180
+      L     '$Ro: '
+      T     LD   184
+      L     'L B '
+      T     LD   188
+      L     '[AR1'
+      T     LD   192
+      L     ',P#0'
+      T     LD   196
+      L     '.0]$R'
+      T     LD   200
+      L     'T #c'
+      T     LD   204
+      L     '$RCAL'
+      T     LD   208
+      L     'L "p'
+      T     LD   212
+      L     'utc"'
+      T     LD   216
+      L     '$Rc:='
+      T     LD   220
+      L     '#c$RL'
+      T     LD   224
+      L     ' B ['
+      T     LD   228
+      L     'AR1,'
+      T     LD   232
+      L     'P#1.'
+      T     LD   236
+      L     '0]$RT'
+      T     LD   240
+      L     ' #c$R'
+      T     LD   244
+      L     'CALL'
+      T     LD   248
+      L     ' "pu'
+      T     LD   252
+      L     'tc"$R'
+      T     LD   256
+      L     'c:=#'
+      T     LD   260
+      L     'c$RL '
+      T     LD   264
+      L     'B [A'
+      T     LD   268
+      L     'R1,P'
+      T     LD   272
+      L     '#2.0'
+      T     LD   276
+      L     ']$RT '
+      T     LD   280
+      L     '#c$RC'
+      T     LD   284
+      L     'ALL '
+      T     LD   288
+      L     '"put'
+      T     LD   292
+      L     'c"$Rc'
+      T     LD   296
+      L     ':=#c'
+      T     LD   300
+      L     '$RL B'
+      T     LD   304
+      L     ' [AR'
+      T     LD   308
+      L     '1,P#'
+      T     LD   312
+      L     '3.0]'
+      T     LD   316
+      L     '$RT #'
+      T     LD   320
+      L     'c$RCA'
+      T     LD   324
+      L     'LL "'
+      T     LD   328
+      L     'putc'
+      T     LD   332
+      L     '"$Rc:'
+      T     LD   336
+      L     '=#c$R'
+      T     LD   340
+      L     'U #e'
+      T     LD   344
+      L     '$RSPB'
+      T     LD   348
+      L     ' x$RC'
+      T     LD   352
+      L     'ALL '
+      T     LD   356
+      L     '"put'
+      T     LD   360
+      L     'c"$Rc'
+      T     LD   364
+      L     ':=#q'
+      T     LD   368
+      L     '$RCAL'
+      T     LD   372
+      L     'L "p'
+      T     LD   376
+      L     'utc"'
+      T     LD   380
+      L     '$Rc:='
+      T     LD   384
+      L     '#n$RC'
+      T     LD   388
+      L     'ALL '
+      T     LD   392
+      L     '"put'
+      T     LD   396
+      L     'c"$Rc'
+      T     LD   400
+      L     ':=#T'
+      T     LD   404
+      L     '$RCAL'
+      T     LD   408
+      L     'L "p'
+      T     LD   412
+      L     'utc"'
+      T     LD   416
+      L     '$Rc:='
+      T     LD   420
+      L     '#A$RC'
+      T     LD   424
+      L     'ALL '
+      T     LD   428
+      L     '"put'
+      T     LD   432
+      L     'c"$Rc'
+      T     LD   436
+      L     ':=#L'
+      T     LD   440
+      L     '$RCAL'
+      T     LD   444
+      L     'L "p'
+      T     LD   448
+      L     'utc"'
+      T     LD   452
+      L     '$Rc:='
+      T     LD   456
+      L     '#D$RC'
+      T     LD   460
+      L     'ALL '
+      T     LD   464
+      L     '"put'
+      T     LD   468
+      L     'c"$Rc'
+      T     LD   472
+      L     ':=#A'
+      T     LD   476
+      L     '$RL #'
+      T     LD   480
+      L     'i$RT '
+      T     LD   484
+      L     '#j$RL'
+      T     LD   488
+      L     ' #j$R'
+      T     LD   492
+      L     'L 10'
+      T     LD   496
+      L     '0$R/I'
+      T     LD   500
+      L     '$RSPZ'
+      T     LD   504
+      L     ' z$R+'
+      T     LD   508
+      L     ' 48$R'
+      T     LD   512
+      L     'T #c'
+      T     LD   516
+      L     '$RSRD'
+      T     LD   520
+      L     ' 16$R'
+      T     LD   524
+      L     'T #j'
+      T     LD   528
+      L     '$RCAL'
+      T     LD   532
+      L     'L "p'
+      T     LD   536
+      L     'utc"'
+      T     LD   540
+      L     '$Rc:='
+      T     LD   544
+      L     '#c$RL'
+      T     LD   548
+      L     ' #j$R'
+      T     LD   552
+      L     'L 10'
+      T     LD   556
+      L     '$R/I$R'
+      T     LD   560
+      L     '+ 48'
+      T     LD   564
+      L     '$RT #'
+      T     LD   568
+      L     'c$RSR'
+      T     LD   572
+      L     'D 16'
+      T     LD   576
+      L     '$RT #'
+      T     LD   580
+      L     'j$RCA'
+      T     LD   584
+      L     'LL "'
+      T     LD   588
+      L     'putc'
+      T     LD   592
+      L     '"$Rc:'
+      T     LD   596
+      L     '=#c$R'
+      T     LD   600
+      L     'SPA '
+      T     LD   604
+      L     'e$Rz:'
+      T     LD   608
+      L     ' L #'
+      T     LD   612
+      L     'j$RL '
+      T     LD   616
+      L     '10$R/'
+      T     LD   620
+      L     'I$RSP'
+      T     LD   624
+      L     'Z e$R'
+      T     LD   628
+      L     '+ 48'
+      T     LD   632
+      L     '$RT #'
+      T     LD   636
+      L     'c$RSR'
+      T     LD   640
+      L     'D 16'
+      T     LD   644
+      L     '$RT #'
+      T     LD   648
+      L     'j$RCA'
+      T     LD   652
+      L     'LL "'
+      T     LD   656
+      L     'putc'
+      T     LD   660
+      L     '"$Rc:'
+      T     LD   664
+      L     '=#c$R'
+      T     LD   668
+      L     'e: L'
+      T     LD   672
+      L     ' #j$R'
+      T     LD   676
+      L     '+ 48'
+      T     LD   680
+      L     '$RT #'
+      T     LD   684
+      L     'c$RCA'
+      T     LD   688
+      L     'LL "'
+      T     LD   692
+      L     'putc'
+      T     LD   696
+      L     '"$Rc:'
+      T     LD   700
+      L     '=#c$R'
+      T     LD   704
+      L     'CALL'
+      T     LD   708
+      L     ' "pu'
+      T     LD   712
+      L     'tc"$R'
+      T     LD   716
+      L     'c:=#'
+      T     LD   720
+      L     'n$Rx:'
+      T     LD   724
+      L     ' +AR'
+      T     LD   728
+      L     '1 P#'
+      T     LD   732
+      L     '4.0$R'
+      T     LD   736
+      L     'L #i'
+      T     LD   740
+      L     '$R+ 4'
+      T     LD   744
+      L     '$RT #'
+      T     LD   748
+      L     'i$RL '
+      T     LD   752
+      L     '812$R'
+      T     LD   756
+      L     '<I$RS'
+      T     LD   760
+      L     'PB n'
+      T     LD   764
+      L     '$RU #'
+      T     LD   768
+      L     'e$RBE'
+      T     LD   772
+      L     'B$RSE'
+      T     LD   776
+      L     'T$R= '
+      T     LD   780
+      L     '#e$RL'
+      T     LD   784
+      L     ' 0$RT'
+      T     LD   788
+      L     ' #i$R'
+      T     LD   792
+      L     'LAR1'
+      T     LD   796
+      L     ' P##'
+      T     LD   800
+      L     's$RSP'
+      T     LD   804
+      L     'B n$R'
+      T     LD   808
+      L     B#16#27
+      T     #q
+      L     B#16#D
+      T     #n
+      L     B#16#4C
+      T     #L
+      L     B#16#54
+      T     #T
+      L     B#16#44
+      T     #D
+      L     B#16#20
+      T     #A
+      LAR1  P##s
+      CLR   
+      =     #e
+      L     0
+      T     #i
+n:    U     #e
+      SPB   o
+      CALL  "putc"
+       c:=#L
+      CALL  "putc"
+       c:=#A
+      CALL  "putc"
+       c:=#q
+o:    L     B [AR1,P#0.0]
+      T     #c
+      CALL  "putc"
+       c:=#c
+      L     B [AR1,P#1.0]
+      T     #c
+      CALL  "putc"
+       c:=#c
+      L     B [AR1,P#2.0]
+      T     #c
+      CALL  "putc"
+       c:=#c
+      L     B [AR1,P#3.0]
+      T     #c
+      CALL  "putc"
+       c:=#c
+      U     #e
+      SPB   x
+      CALL  "putc"
+       c:=#q
+      CALL  "putc"
+       c:=#n
+      CALL  "putc"
+       c:=#T
+      CALL  "putc"
+       c:=#A
+      CALL  "putc"
+       c:=#L
+      CALL  "putc"
+       c:=#D
+      CALL  "putc"
+       c:=#A
+      L     #i
+      T     #j
+      L     #j
+      L     100
+      /I    
+      SPZ   z
+      +     48
+      T     #c
+      SRD   16
+      T     #j
+      CALL  "putc"
+       c:=#c
+      L     #j
+      L     10
+      /I    
+      +     48
+      T     #c
+      SRD   16
+      T     #j
+      CALL  "putc"
+       c:=#c
+      SPA   e
+z:    L     #j
+      L     10
+      /I    
+      SPZ   e
+      +     48
+      T     #c
+      SRD   16
+      T     #j
+      CALL  "putc"
+       c:=#c
+e:    L     #j
+      +     48
+      T     #c
+      CALL  "putc"
+       c:=#c
+      CALL  "putc"
+       c:=#n
+x:    +AR1  P#4.0
+      L     #i
+      +     4
+      T     #i
+      L     812
+      <I    
+      SPB   n
+      U     #e
+      BEB   
+      SET   
+      =     #e
+      L     0
+      T     #i
+      LAR1  P##s
+      SPB   n

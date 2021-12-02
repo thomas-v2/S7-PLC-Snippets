@@ -15,6 +15,10 @@ aus einer remoten S7-Steuerung zu lesen.
 
 Implementierung eines Parsers und Interpreters für einfache arithmetische Ausdrücke, in Step7 SCL.
 
+## Step7-Quine-AWL
+
+Eine Beispielimplementation eines Quine-Programms für Siemens S7 (300/400) in AWL.
+
 ## Lizenz
 
 Soweit nicht anders vermerkt, gilt für alle Quellcodes die GNU Lesser General Public License,

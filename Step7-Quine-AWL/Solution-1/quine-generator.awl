@@ -1,0 +1,111 @@
+      L     B#16#27
+      T     #q
+      L     B#16#D
+      T     #n
+      L     B#16#4C
+      T     #L
+      L     B#16#54
+      T     #T
+      L     B#16#44
+      T     #D
+      L     B#16#20
+      T     #A
+      LAR1  P##s
+      CLR   
+      =     #e
+      L     0
+      T     #i
+n:    U     #e
+      SPB   o
+      CALL  "putc"
+       c:=#L
+      CALL  "putc"
+       c:=#A
+      CALL  "putc"
+       c:=#q
+o:    L     B [AR1,P#0.0]
+      T     #c
+      CALL  "putc"
+       c:=#c
+      L     B [AR1,P#1.0]
+      T     #c
+      CALL  "putc"
+       c:=#c
+      L     B [AR1,P#2.0]
+      T     #c
+      CALL  "putc"
+       c:=#c
+      L     B [AR1,P#3.0]
+      T     #c
+      CALL  "putc"
+       c:=#c
+      U     #e
+      SPB   x
+      CALL  "putc"
+       c:=#q
+      CALL  "putc"
+       c:=#n
+      CALL  "putc"
+       c:=#T
+      CALL  "putc"
+       c:=#A
+      CALL  "putc"
+       c:=#L
+      CALL  "putc"
+       c:=#D
+      CALL  "putc"
+       c:=#A
+      L     #i
+      T     #j
+      L     #j
+      L     100
+      /I    
+      SPZ   z
+      +     48
+      T     #c
+      SRD   16
+      T     #j
+      CALL  "putc"
+       c:=#c
+      L     #j
+      L     10
+      /I    
+      +     48
+      T     #c
+      SRD   16
+      T     #j
+      CALL  "putc"
+       c:=#c
+      SPA   e
+z:    L     #j
+      L     10
+      /I    
+      SPZ   e
+      +     48
+      T     #c
+      SRD   16
+      T     #j
+      CALL  "putc"
+       c:=#c
+e:    L     #j
+      +     48
+      T     #c
+      CALL  "putc"
+       c:=#c
+      CALL  "putc"
+       c:=#n
+x:    +AR1  P#4.0
+      L     #i
+      +     4
+      T     #i
+      L     812
+      <I    
+      SPB   n
+      U     #e
+      BEB   
+      SET   
+      =     #e
+      L     0
+      T     #i
+      LAR1  P##s
+      SPB   n
