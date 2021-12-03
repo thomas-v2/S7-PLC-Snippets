@@ -207,7 +207,6 @@ VERSION : 1.0
          ptr_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
          ptr_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
       END_STRUCT;
-      stat_RD_i_save_length_bytes { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Array[1..4] of UInt;   // Gespeicherte lokale Zieladressen mit Längen in Bytes normiert
       stat_RCV_Timeout { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;   // Empfangstimeout abgelaufen
       stat_CON_Timeout { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;   // Verbindungstimeout abgelaufen
       stat_ID { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : CONN_OUC;   // Gespeicherte Verbindungs-ID
