@@ -10,8 +10,8 @@ VERSION : 1.0
       ADDR_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Remote;   // Adresse in der Partnerstation
       _ADDR_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT ADDR_1 : Struct
          syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         datatype { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         elemcount { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
          ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
@@ -21,8 +21,8 @@ VERSION : 1.0
       ADDR_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Remote;   // Adresse in der Partnerstation
       _ADDR_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT ADDR_2 : Struct
          syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         datatype { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         elemcount { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
          ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
@@ -32,8 +32,8 @@ VERSION : 1.0
       ADDR_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Remote;   // Adresse in der Partnerstation
       _ADDR_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT ADDR_3 : Struct
          syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         datatype { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         elemcount { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
          ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
@@ -43,8 +43,8 @@ VERSION : 1.0
       ADDR_4 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Remote;   // Adresse in der Partnerstation
       _ADDR_4 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT ADDR_4 : Struct
          syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         datatype { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         elemcount { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
          ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
@@ -54,8 +54,8 @@ VERSION : 1.0
       RD_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Remote;   // Adresse in der eigenen Station
       _RD_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT RD_1 : Struct
          syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         datatype { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         elemcount { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
          ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
@@ -65,8 +65,8 @@ VERSION : 1.0
       RD_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Remote;   // Adresse in der eigenen Station
       _RD_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT RD_2 : Struct
          syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         datatype { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         elemcount { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
          ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
@@ -76,8 +76,8 @@ VERSION : 1.0
       RD_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Remote;   // Adresse in der eigenen Station
       _RD_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT RD_3 : Struct
          syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         datatype { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         elemcount { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
          ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
@@ -87,8 +87,8 @@ VERSION : 1.0
       RD_4 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Remote;   // Adresse in der eigenen Station
       _RD_4 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} AT RD_4 : Struct
          syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         datatype { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         elemcount { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
          ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
@@ -188,24 +188,26 @@ VERSION : 1.0
       stat_TON_CONTO {OriginalPartName := 'IEC_TIMER'; LibVersion := '1.0'; ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : TON_TIME;   // Timer Verbindungstimeout
       stat_ADDR_i_save { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Array[1..4] of Struct   // Gespeicherte remote Zieladressen
          syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         datatype { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         elemcount { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
          ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
          ptr_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
          ptr_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
       END_STRUCT;
+      stat_ADDR_i_save_length_bytes { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Array[1..4] of UInt;   // Gespeicherte remote Zieladressen mit Längen in Bytes normiert
       stat_RD_i_save { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Array[1..4] of Struct   // Gespeicherte lokale Zieladressen
          syntaxid { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         transpsize { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
-         length { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
+         datatype { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
+         elemcount { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          dbnum { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : UInt;
          area { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
          ptr_1 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
          ptr_2 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
          ptr_3 { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Byte;
       END_STRUCT;
+      stat_RD_i_save_length_bytes { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Array[1..4] of UInt;   // Gespeicherte lokale Zieladressen mit Längen in Bytes normiert
       stat_RCV_Timeout { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;   // Empfangstimeout abgelaufen
       stat_CON_Timeout { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;   // Verbindungstimeout abgelaufen
       stat_ID { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : CONN_OUC;   // Gespeicherte Verbindungs-ID
@@ -378,18 +380,32 @@ BEGIN
 	                // Es werden die Adressen bis zum ersten NULL Any-Pointer übernommen.
 	                // Wenn am Parameter NULL angetragen wird ist Syntax ID weiterhin 0x10, die
 	                // restlichen Werte jedoch Null.
-	                IF (#stat_ADDR_i_save[#i].transpsize > 0 AND #stat_ADDR_i_save[#i].length > 0 )
+	                IF (#stat_ADDR_i_save[#i].datatype > 0 AND #stat_ADDR_i_save[#i].elemcount > 0 )
 	                THEN
 	                    // Es ist eine Adresse angegeben
 	                    #stat_n_items_active := #stat_n_items_active + 1;
 	                    // Adressbereiche ADDR_i und RD_i prüfen
-	                    IF (#stat_ADDR_i_save[#i].transpsize <> #stat_RD_i_save[#i].transpsize OR
-	                        #stat_ADDR_i_save[#i].length <> #stat_RD_i_save[#i].length)
+	                    IF (#stat_ADDR_i_save[#i].datatype <> #stat_RD_i_save[#i].datatype OR
+	                        #stat_ADDR_i_save[#i].elemcount <> #stat_RD_i_save[#i].elemcount)
 	                    THEN
 	                        #ERROR := true;
 	                        #STATUS := INT_TO_WORD(4);
 	                        #stat_STATE := #SM_IDLE;
 	                    END_IF;
+	                    // Wiederholfaktor und Datentyp in einheitliche Länge in Bytes umrechnen
+	                    CASE BYTE_TO_INT(#stat_ADDR_i_save[#i].datatype) OF
+	                        1..3: // 1=Bit, 2=Byte, 3=Char
+	                            #stat_ADDR_i_save_length_bytes[#i] := #stat_ADDR_i_save[#i].elemcount;
+	                        4..5: // 4=Word, 5=Int
+	                            #stat_ADDR_i_save_length_bytes[#i] := #stat_ADDR_i_save[#i].elemcount * 2;
+	                        6..8: // 6=DWord, 7=DInt, 8=Real
+	                            #stat_ADDR_i_save_length_bytes[#i] := #stat_ADDR_i_save[#i].elemcount * 4;
+	                        ELSE:
+	                            // Alle anderen Datentypen sind nicht erlaubt
+	                            #ERROR := true;
+	                            #STATUS := INT_TO_WORD(4);
+	                            #stat_STATE := #SM_IDLE;
+	                    END_CASE;
 	                ELSE
 	                    IF #stat_n_items_active > 0 THEN
 	                        // Wenn eine Adresse vorhanden -> hier Ende und Ok.
@@ -503,8 +519,8 @@ BEGIN
 	                #s7c_job_rv.pa_it[#i].varspec := 16#12;
 	                #s7c_job_rv.pa_it[#i].varspec_length := 10;
 	                #s7c_job_rv.pa_it[#i].syntaxid := #stat_ADDR_i_save[#i].syntaxid;
-	                #s7c_job_rv.pa_it[#i].transpsize := #stat_ADDR_i_save[#i].transpsize;
-	                #s7c_job_rv.pa_it[#i].length := #stat_ADDR_i_save[#i].length;
+	                #s7c_job_rv.pa_it[#i].transpsize := 16#2; // Immer BYTE als Transportgröße, Länge in Bytes
+	                #s7c_job_rv.pa_it[#i].length := #stat_ADDR_i_save_length_bytes[#i];
 	                #s7c_job_rv.pa_it[#i].dbnum := #stat_ADDR_i_save[#i].dbnum;
 	                #s7c_job_rv.pa_it[#i].area := #stat_ADDR_i_save[#i].area;
 	                #s7c_job_rv.pa_it[#i].ptr_1 := #stat_ADDR_i_save[#i].ptr_1;
@@ -566,7 +582,7 @@ BEGIN
 	                            END_IF;
 	                            
 	                            // Länge in Antwort stimmt mit Anfrage überein
-	                            IF #it_length_actual = #stat_ADDR_i_save[#i].length THEN
+	                            IF #it_length_actual = #stat_ADDR_i_save_length_bytes[#i] THEN
 	                                #byteoffset := 0;
 	                                #byteoffset.%B0 := #stat_RD_i_save[#i].ptr_3;
 	                                #byteoffset.%B1 := #stat_RD_i_save[#i].ptr_2;
