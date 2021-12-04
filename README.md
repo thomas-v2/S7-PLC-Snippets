@@ -8,8 +8,8 @@ TIA Portal (TIA) oder Step 7 Classic V5.x (Step7) handelt.
 
 ## TIA-Put-Get-OUC (S7-1200/1500)
 
-Implementierung der GET Funktionalität unter Verwendung der Open User Communication (OUC), um Daten
-aus einer remoten S7-Steuerung zu lesen.
+Implementierung der GET sowie PUT Funktionen unter Verwendung der Open User Communication (OUC), um Daten
+aus einer remoten S7-Steuerung zu lesen und zu schreiben.
 
 ## Step7-Formelparser-SCL
 
