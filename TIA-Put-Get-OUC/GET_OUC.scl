@@ -3,7 +3,7 @@ TITLE = GET_OUC
 { S7_Optimized_Access := 'FALSE' }
 AUTHOR : ThomasWiens
 FAMILY : COMM
-VERSION : 1.0
+VERSION : 1.01
 //Implementierung der GET Funktionalität unter Verwendung der Open User Communication (OUC), um Daten aus einer remoten S7-Steuerung zu lesen
    VAR_INPUT 
       REQ { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;   // Steuerparameter request, aktiviert den Datenaustausch bei steigender Flanke.
@@ -263,6 +263,7 @@ VERSION : 1.0
       S7_HD_ROSCTR_ACKDATA : Byte := 16#03;   // S7comm header: ROSCTR AckData (3)
       S7_PA_FUNC_SETUPCOMM : Byte := 16#F0;   // S7comm parameter: Function Setup Communication (0xf0)
       S7_PA_FUNC_READVAR : Byte := 16#04;   // S7comm parameter: Function Read Var (0x04)
+      DT_BOOL : Byte := 16#1;   // ANY Datatype: BOOL
    END_VAR
 
 
@@ -319,12 +320,16 @@ BEGIN
 	// - Werden mehrere Bereiche gelesen und einer davon meldet einen Zugriffsfehler in der Remote-CPU,
 	//   so werden trotzdem die anderen Bereiche verarbeitet und in den Zielbereich geschrieben.
 	//   NDR ist dann false, ERROR ist dann true.
+	// - Im Any-Pointer sind nur die Datentypen BOOL, BYTE, CHAR, WORD, INT, DWORD, DINT und REAL erlaubt.
+	//   Bei Typ BOOL ist nur der Wiederholfaktor 1 erlaubt.
 	//   
 	//-----------------------------------------------------------------------------
 	// Change log table:
 	// Version Date        In charge / Changes applied
 	// 01.00.00 01.12.2021 Thomas Wiens
 	//                     Ursprungsversion
+	// 01.01.00 04.12.2021 Thomas Wiens
+	//                     Spezielles Handling bei Lesen eines BOOLs ergänzt
 	//=============================================================================
 	
 	#stat_NEW_REQ := #REQ AND NOT #stat_REQ_OLD AND #stat_STATE = #SM_IDLE;
@@ -379,7 +384,7 @@ BEGIN
 	                // Es werden die Adressen bis zum ersten NULL Any-Pointer übernommen.
 	                // Wenn am Parameter NULL angetragen wird ist Syntax ID weiterhin 0x10, die
 	                // restlichen Werte jedoch Null.
-	                IF (#stat_ADDR_i_save[#i].datatype > 0 AND #stat_ADDR_i_save[#i].elemcount > 0 )
+	                IF (#stat_ADDR_i_save[#i].datatype > 0 AND #stat_ADDR_i_save[#i].elemcount > 0)
 	                THEN
 	                    // Es ist eine Adresse angegeben
 	                    #stat_n_items_active := #stat_n_items_active + 1;
@@ -390,20 +395,31 @@ BEGIN
 	                        #ERROR := true;
 	                        #STATUS := INT_TO_WORD(4);
 	                        #stat_STATE := #SM_IDLE;
+	                        EXIT;
 	                    END_IF;
 	                    // Wiederholfaktor und Datentyp in einheitliche Länge in Bytes umrechnen
 	                    CASE BYTE_TO_INT(#stat_ADDR_i_save[#i].datatype) OF
-	                        1..3: // 1=Bit, 2=Byte, 3=Char
+	                        1:    // 1=BOOL, hier ist nur ein Element erlaubt
+	                            IF #stat_ADDR_i_save[#i].elemcount > 1 THEN
+	                                #ERROR := true;
+	                                #STATUS := INT_TO_WORD(4);
+	                                #stat_STATE := #SM_IDLE;
+	                                EXIT;
+	                            ELSE
+	                                #stat_ADDR_i_save_length_bytes[#i] := #stat_ADDR_i_save[#i].elemcount;
+	                            END_IF;
+	                        2..3: // 2=BYTE, 3=CHAR
 	                            #stat_ADDR_i_save_length_bytes[#i] := #stat_ADDR_i_save[#i].elemcount;
-	                        4..5: // 4=Word, 5=Int
+	                        4..5: // 4=WORD, 5=INT
 	                            #stat_ADDR_i_save_length_bytes[#i] := #stat_ADDR_i_save[#i].elemcount * 2;
-	                        6..8: // 6=DWord, 7=DInt, 8=Real
+	                        6..8: // 6=DWORD, 7=DINT, 8=REAL
 	                            #stat_ADDR_i_save_length_bytes[#i] := #stat_ADDR_i_save[#i].elemcount * 4;
 	                        ELSE:
 	                            // Alle anderen Datentypen sind nicht erlaubt
 	                            #ERROR := true;
 	                            #STATUS := INT_TO_WORD(4);
 	                            #stat_STATE := #SM_IDLE;
+	                            EXIT;
 	                    END_CASE;
 	                ELSE
 	                    IF #stat_n_items_active > 0 THEN
@@ -414,13 +430,16 @@ BEGIN
 	                        #ERROR := true;
 	                        #STATUS := INT_TO_WORD(4);
 	                        #stat_STATE := #SM_IDLE;
+	                        EXIT;
 	                    END_IF;
 	                END_IF;
 	            END_FOR;
-	            // Alles Ok soweit, Auftrag starten
-	            #STATUS := INT_TO_WORD(25); // Auftrag in Bearbeitung
-	            #stat_TCON_REQ := true;
-	            #stat_STATE := #SM_CONNECT_ISO;
+	            IF NOT #ERROR THEN
+	                // Alles Ok soweit, Auftrag starten
+	                #STATUS := INT_TO_WORD(25); // Auftrag in Bearbeitung
+	                #stat_TCON_REQ := true;
+	                #stat_STATE := #SM_CONNECT_ISO;
+	            END_IF;
 	        END_IF;
 	    //END_REGION
 	    
@@ -518,7 +537,11 @@ BEGIN
 	                #s7c_job_rv.pa_it[#i].varspec := 16#12;
 	                #s7c_job_rv.pa_it[#i].varspec_length := 10;
 	                #s7c_job_rv.pa_it[#i].syntaxid := #stat_ADDR_i_save[#i].syntaxid;
-	                #s7c_job_rv.pa_it[#i].transpsize := 16#2; // Immer BYTE als Transportgröße, Länge in Bytes
+	                IF #stat_ADDR_i_save[#i].datatype = #DT_BOOL THEN
+	                    #s7c_job_rv.pa_it[#i].transpsize := 16#1;  // BOOL
+	                ELSE
+	                    #s7c_job_rv.pa_it[#i].transpsize := 16#2;  // Immer BYTE als Transportgröße, Länge in Bytes
+	                END_IF;
 	                #s7c_job_rv.pa_it[#i].length := #stat_ADDR_i_save_length_bytes[#i];
 	                #s7c_job_rv.pa_it[#i].dbnum := #stat_ADDR_i_save[#i].dbnum;
 	                #s7c_job_rv.pa_it[#i].area := #stat_ADDR_i_save[#i].area;
@@ -572,8 +595,9 @@ BEGIN
 	                                #ERROR := true;
 	                                #STATUS := INT_TO_WORD(8);
 	                                #stat_STATE := #SM_DISCONNECT;
-	                            ELSIF #it_transpsize = 3 OR
-	                                #it_transpsize = 4 OR
+	                            ELSIF #it_transpsize = 3 THEN // Nur ein BIT
+	                                #it_length_actual := 1;
+	                            ELSIF #it_transpsize = 4 OR
 	                                #it_transpsize = 5 THEN
 	                                #it_length_actual := #it_length / 8;
 	                            ELSE
@@ -588,13 +612,22 @@ BEGIN
 	                                #byteoffset.%B2 := #stat_RD_i_save[#i].ptr_1;
 	                                #byteoffset := SHR(IN := #byteoffset, N := 3);
 	                                
-	                                FOR #j := 0 TO UINT_TO_INT(#it_length_actual - 1) DO
-	                                    // Empfangene Daten in Zielbereich schreiben.
-	                                    POKE(area := #stat_RD_i_save[#i].area,
-	                                         dbNumber := #stat_RD_i_save[#i].dbnum,
-	                                         byteOffset := DWORD_TO_DINT(#byteoffset) + #j,
-	                                         value := #stat_RCV_BUF[#pos + #j]);
-	                                END_FOR;
+	                                IF #stat_RD_i_save[#i].datatype = #DT_BOOL THEN
+	                                    POKE_BOOL(area := #stat_RD_i_save[#i].area,
+	                                              dbNumber := #stat_RD_i_save[#i].dbnum,
+	                                              byteOffset := DWORD_TO_DINT(#byteoffset),
+	                                              bitOffset := BYTE_TO_INT(#stat_RD_i_save[#i].ptr_3 AND 16#7),
+	                                              value := BYTE_TO_BOOL(#stat_RCV_BUF[#pos]));
+	                                    
+	                                ELSE
+	                                    FOR #j := 0 TO UINT_TO_INT(#it_length_actual - 1) DO
+	                                        // Empfangene Daten in Zielbereich schreiben.
+	                                        POKE(area := #stat_RD_i_save[#i].area,
+	                                             dbNumber := #stat_RD_i_save[#i].dbnum,
+	                                             byteOffset := DWORD_TO_DINT(#byteoffset) + #j,
+	                                             value := #stat_RCV_BUF[#pos + #j]);
+	                                    END_FOR;
+	                                END_IF;
 	                                // Zeiger auf Anfang nächstes Item setzen.
 	                                #pos := #pos + UINT_TO_INT(#it_length_actual);
 	                                // Füllbyte wenn Länge nicht durch 2 teilbar
